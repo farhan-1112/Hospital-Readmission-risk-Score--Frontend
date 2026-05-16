@@ -23,22 +23,21 @@ const SAMPLES = {
   high: {
     ...DEFAULTS, patient_name: 'John Doe (High Risk)', time_in_hospital: 8, num_lab_procedures: 65, num_medications: 25, 
     number_emergency: 4, number_inpatient: 6, number_diagnoses: 12, age: '[70-80)', 
-    diag_1: '428', diag_2: '250', diag_3: '276', A1Cresult: '>8', insulin: 'Up', metformin: 'Steady', change: 'Ch', diabetesMed: 'Yes'
-
+    diag_1: '428', diag_2: '250', diag_3: '276', A1Cresult: '>8', insulin: 'Up', metformin: 'Steady', 
+    repaglinide: 'Steady', glipizide: 'Up', change: 'Ch', diabetesMed: 'Yes'
   },
   medium: {
     ...DEFAULTS, patient_name: 'Jane Smith (Medium Risk)', time_in_hospital: 4, num_lab_procedures: 35, num_medications: 12, 
     number_inpatient: 1, number_diagnoses: 6, age: '[50-60)', diag_1: '250', diag_2: '276', diag_3: '401',
-    A1Cresult: 'Norm', insulin: 'Steady', metformin: 'No', change: 'No', diabetesMed: 'Yes'
-
+    A1Cresult: 'Norm', insulin: 'Steady', metformin: 'No', glimepiride: 'Steady', change: 'No', diabetesMed: 'Yes'
   },
   low: {
     ...DEFAULTS, patient_name: 'Bob Wilson (Low Risk)', time_in_hospital: 2, num_lab_procedures: 20, num_medications: 8, 
     number_inpatient: 0, number_diagnoses: 3, age: '[30-40)', diag_1: '250', diag_2: '', diag_3: '',
     A1Cresult: 'None', insulin: 'No', metformin: 'No', change: 'No', diabetesMed: 'No'
-
   }
 };
+
 
 export default function PredictPage() {
   const [tab, setTab] = useState(0);

@@ -1229,6 +1229,46 @@ ul {
   font-weight: 600;
 }
 
+/* Risk Pills and Summary Styling */
+.risk-pill {
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.risk-pill.high { background: var(--risk-high); }
+.risk-pill.medium { background: var(--risk-medium); }
+.risk-pill.low { background: var(--risk-low); }
+
+.bullet-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bullet-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+}
+
+.bullet-list li::before {
+  content: '●';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 0.8rem;
+  top: 2px;
+}
+
 /* Advanced Medication Profile Styles */
 .advanced-profile {
   margin-top: 1.5rem;
@@ -1298,5 +1338,3 @@ ul {
   border-color: var(--accent) !important;
   background: rgba(168, 85, 247, 0.05) !important;
 }
-
-
