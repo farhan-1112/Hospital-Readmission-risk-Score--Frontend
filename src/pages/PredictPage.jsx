@@ -14,8 +14,13 @@ const DEFAULTS = {
   metformin: 'No', repaglinide: 'No', nateglinide: 'No', glimepiride: 'No',
   glipizide: 'No', glyburide: 'No', pioglitazone: 'No', rosiglitazone: 'No',
   acarbose: 'No', miglitol: 'No', 'glyburide-metformin': 'No',
+  'glipizide-metformin': 'No', 'glimepiride-pioglitazone': 'No',
+  'metformin-rosiglitazone': 'No', 'metformin-pioglitazone': 'No',
+  'chlorpropamide': 'No', 'acetohexamide': 'No', 'tolbutamide': 'No',
+  'troglitazone': 'No', 'tolazamide': 'No', 'examide': 'No', 'citoglipton': 'No',
   change: 'No', diabetesMed: 'No',
 };
+
 
 
 
@@ -24,12 +29,12 @@ const SAMPLES = {
     ...DEFAULTS, patient_name: 'John Doe (High Risk)', time_in_hospital: 8, num_lab_procedures: 65, num_medications: 25, 
     number_emergency: 4, number_inpatient: 6, number_diagnoses: 12, age: '[70-80)', 
     diag_1: '428', diag_2: '250', diag_3: '276', A1Cresult: '>8', insulin: 'Up', metformin: 'Steady', 
-    repaglinide: 'Steady', glipizide: 'Up', change: 'Ch', diabetesMed: 'Yes'
+    repaglinide: 'Steady', glipizide: 'Up', glyburide: 'Steady', pioglitazone: 'Steady', change: 'Ch', diabetesMed: 'Yes'
   },
   medium: {
     ...DEFAULTS, patient_name: 'Jane Smith (Medium Risk)', time_in_hospital: 4, num_lab_procedures: 35, num_medications: 12, 
     number_inpatient: 1, number_diagnoses: 6, age: '[50-60)', diag_1: '250', diag_2: '276', diag_3: '401',
-    A1Cresult: 'Norm', insulin: 'Steady', metformin: 'No', glimepiride: 'Steady', change: 'No', diabetesMed: 'Yes'
+    A1Cresult: 'Norm', insulin: 'Steady', metformin: 'No', glimepiride: 'Steady', rosiglitazone: 'Steady', change: 'No', diabetesMed: 'Yes'
   },
   low: {
     ...DEFAULTS, patient_name: 'Bob Wilson (Low Risk)', time_in_hospital: 2, num_lab_procedures: 20, num_medications: 8, 
@@ -37,6 +42,7 @@ const SAMPLES = {
     A1Cresult: 'None', insulin: 'No', metformin: 'No', change: 'No', diabetesMed: 'No'
   }
 };
+
 
 
 export default function PredictPage() {
@@ -82,10 +88,11 @@ export default function PredictPage() {
         <p>Enter patient details to predict 30-day readmission risk</p>
         <div className="sample-buttons" style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
           <span style={{ fontSize: '0.8rem', alignSelf: 'center', color: 'var(--text-muted)' }}>Load Sample:</span>
-          <button className="btn btn-outline btn-sm" onClick={() => { setForm(SAMPLES.high); setTab(0); }}>High Risk</button>
-          <button className="btn btn-outline btn-sm" onClick={() => { setForm(SAMPLES.medium); setTab(0); }}>Medium Risk</button>
-          <button className="btn btn-outline btn-sm" onClick={() => { setForm(SAMPLES.low); setTab(0); }}>Low Risk</button>
+          <button className="btn btn-outline btn-sm" onClick={() => { setForm(SAMPLES.high); setShowAdvanced(true); setTab(3); }}>High Risk</button>
+          <button className="btn btn-outline btn-sm" onClick={() => { setForm(SAMPLES.medium); setShowAdvanced(true); setTab(3); }}>Medium Risk</button>
+          <button className="btn btn-outline btn-sm" onClick={() => { setForm(SAMPLES.low); setShowAdvanced(false); setTab(3); }}>Low Risk</button>
         </div>
+
       </div>
       <div className="tabs">
         {tabs.map((t, i) => <button key={t} className={`tab ${tab === i ? 'active' : ''}`} onClick={() => setTabAndClearError(i)}>{t}</button>)}
