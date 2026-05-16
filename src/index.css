@@ -1228,3 +1228,22 @@ ul {
   color: #FFFFFF;
   font-weight: 600;
 }
+
+/* Advanced Medication Profile Styles */
+.advanced-toggle:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.advanced-toggle:active {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.advanced-profile {
+  margin-top: 1rem;
+  transition: all 0.3s var(--easing);
+}
+
+.advanced-profile select {
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+

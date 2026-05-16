@@ -11,30 +11,40 @@ const DEFAULTS = {
   discharge_disposition_id: 1, admission_source_id: 7,
   diag_1: '250', diag_2: '276', diag_3: '250',
   A1Cresult: 'None', max_glu_serum: 'None', insulin: 'No',
+  metformin: 'No', repaglinide: 'No', nateglinide: 'No', glimepiride: 'No',
+  glipizide: 'No', glyburide: 'No', pioglitazone: 'No', rosiglitazone: 'No',
+  acarbose: 'No', miglitol: 'No', 'glyburide-metformin': 'No',
   change: 'No', diabetesMed: 'No',
 };
+
+
 
 const SAMPLES = {
   high: {
     ...DEFAULTS, patient_name: 'John Doe (High Risk)', time_in_hospital: 8, num_lab_procedures: 65, num_medications: 25, 
     number_emergency: 4, number_inpatient: 6, number_diagnoses: 12, age: '[70-80)', 
-    diag_1: '428', diag_2: '250', diag_3: '276', A1Cresult: '>8', insulin: 'Up', change: 'Ch', diabetesMed: 'Yes'
+    diag_1: '428', diag_2: '250', diag_3: '276', A1Cresult: '>8', insulin: 'Up', metformin: 'Steady', change: 'Ch', diabetesMed: 'Yes'
+
   },
   medium: {
     ...DEFAULTS, patient_name: 'Jane Smith (Medium Risk)', time_in_hospital: 4, num_lab_procedures: 35, num_medications: 12, 
     number_inpatient: 1, number_diagnoses: 6, age: '[50-60)', diag_1: '250', diag_2: '276', diag_3: '401',
-    A1Cresult: 'Norm', insulin: 'Steady', change: 'No', diabetesMed: 'Yes'
+    A1Cresult: 'Norm', insulin: 'Steady', metformin: 'No', change: 'No', diabetesMed: 'Yes'
+
   },
   low: {
     ...DEFAULTS, patient_name: 'Bob Wilson (Low Risk)', time_in_hospital: 2, num_lab_procedures: 20, num_medications: 8, 
     number_inpatient: 0, number_diagnoses: 3, age: '[30-40)', diag_1: '250', diag_2: '', diag_3: '',
-    A1Cresult: 'None', insulin: 'No', change: 'No', diabetesMed: 'No'
+    A1Cresult: 'None', insulin: 'No', metformin: 'No', change: 'No', diabetesMed: 'No'
+
   }
 };
 
 export default function PredictPage() {
   const [tab, setTab] = useState(0);
   const [form, setForm] = useState(DEFAULTS);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -110,13 +120,52 @@ export default function PredictPage() {
           <div className="form-group"><label>Tertiary Diagnosis</label><input value={form.diag_3} onChange={e => set('diag_3', e.target.value)} placeholder="e.g. 250" /></div>
         </div><p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.5rem' }}>Common: 250.xx (Diabetes), 428 (Heart Failure), 276 (Fluid Disorders)</p></div>}
 
-        {tab === 3 && <div className="form-section active"><h3 style={{ marginBottom: '1.5rem', color: 'var(--accent)' }}>Diabetes Care</h3><div className="form-grid">
-          <Select label="A1C Result" field="A1Cresult" options={[{v:'None',l:'Not Tested'},{v:'Norm',l:'Normal'},{v:'>7',l:'>7'},{v:'>8',l:'>8'}]} />
-          <Select label="Glucose Serum" field="max_glu_serum" options={[{v:'None',l:'Not Tested'},{v:'Norm',l:'Normal'},{v:'>200',l:'>200'},{v:'>300',l:'>300'}]} />
-          <Select label="Insulin" field="insulin" options={['No','Steady','Up','Down']} />
-          <Select label="Medication Changed" field="change" options={[{v:'No',l:'No'},{v:'Ch',l:'Yes'}]} />
-          <Select label="Diabetes Med" field="diabetesMed" options={['No','Yes']} />
-        </div></div>}
+        {tab === 3 && <div className="form-section active"><h3 style={{ marginBottom: '1.5rem', color: 'var(--accent)' }}>Diabetes Care</h3>
+          <div className="form-grid" style={{ marginBottom: '1.5rem' }}>
+            <Select label="A1C Result" field="A1Cresult" options={[{v:'None',l:'Not Tested'},{v:'Norm',l:'Normal'},{v:'>7',l:'>7'},{v:'>8',l:'>8'}]} />
+            <Select label="Glucose Serum" field="max_glu_serum" options={[{v:'None',l:'Not Tested'},{v:'Norm',l:'Normal'},{v:'>200',l:'>200'},{v:'>300',l:'>300'}]} />
+            <Select label="Insulin" field="insulin" options={['No','Steady','Up','Down']} />
+            <Select label="Metformin" field="metformin" options={['No','Steady','Up','Down']} />
+            <Select label="Medication Changed" field="change" options={[{v:'No',l:'No'},{v:'Ch',l:'Yes'}]} />
+            <Select label="Diabetes Med" field="diabetesMed" options={['No','Yes']} />
+          </div>
+
+          <div className="advanced-profile" style={{ border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
+            <button 
+              type="button"
+              className="advanced-toggle"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              style={{ width: '100%', padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)', border: 'none', cursor: 'pointer', color: 'var(--text)' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <span style={{ fontSize: '1.2rem' }}>{showAdvanced ? '▾' : '▸'}</span>
+                <span style={{ fontWeight: 600 }}>Advanced Medication Profile</span>
+              </div>
+              <span style={{ fontSize: '0.8rem', opacity: 0.6 }}>Optional Fields</span>
+            </button>
+            
+            {showAdvanced && (
+              <div style={{ padding: '1.5rem', background: 'rgba(0,0,0,0.1)', borderTop: '1px solid var(--border)' }}>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
+                  The original UCI dataset contains multiple medication-specific columns. These advanced fields are optional and shown for dataset completeness.
+                </p>
+                <div className="form-grid">
+                  <Select label="Repaglinide" field="repaglinide" options={['No','Steady','Up','Down']} />
+                  <Select label="Nateglinide" field="nateglinide" options={['No','Steady','Up','Down']} />
+                  <Select label="Glimepiride" field="glimepiride" options={['No','Steady','Up','Down']} />
+                  <Select label="Glipizide" field="glipizide" options={['No','Steady','Up','Down']} />
+                  <Select label="Glyburide" field="glyburide" options={['No','Steady','Up','Down']} />
+                  <Select label="Pioglitazone" field="pioglitazone" options={['No','Steady','Up','Down']} />
+                  <Select label="Rosiglitazone" field="rosiglitazone" options={['No','Steady','Up','Down']} />
+                  <Select label="Acarbose" field="acarbose" options={['No','Steady','Up','Down']} />
+                  <Select label="Miglitol" field="miglitol" options={['No','Steady','Up','Down']} />
+                  <Select label="Glyburide-Metformin" field="glyburide-metformin" options={['No','Steady','Up','Down']} />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>}
+
 
         {error && <div style={{ background:'var(--risk-high-bg)', border:'1px solid rgba(239,68,68,0.3)', borderRadius:8, padding:'12px 16px', color:'var(--risk-high)', fontSize:'0.9rem', marginTop:'1rem' }}>Warning: {error}</div>}
 
