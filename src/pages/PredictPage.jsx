@@ -134,22 +134,26 @@ export default function PredictPage() {
             <button 
               type="button"
               className="advanced-toggle"
+              data-open={showAdvanced}
               onClick={() => setShowAdvanced(!showAdvanced)}
-              style={{ width: '100%', padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)', border: 'none', cursor: 'pointer', color: 'var(--text)' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <span style={{ fontSize: '1.2rem' }}>{showAdvanced ? '▾' : '▸'}</span>
-                <span style={{ fontWeight: 600 }}>Advanced Medication Profile</span>
+                <span className="arrow">▸</span>
+                <span className="label-main">Advanced Medication Profile</span>
               </div>
-              <span style={{ fontSize: '0.8rem', opacity: 0.6 }}>Optional Fields</span>
+              <span className="label-sub">Optional Dataset Parameters</span>
             </button>
+
             
             {showAdvanced && (
-              <div style={{ padding: '1.5rem', background: 'rgba(0,0,0,0.1)', borderTop: '1px solid var(--border)' }}>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
-                  The original UCI dataset contains multiple medication-specific columns. These advanced fields are optional and shown for dataset completeness.
-                </p>
-                <div className="form-grid">
+              <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.01)', borderTop: '1px solid var(--border)' }}>
+                <div style={{ marginBottom: '1.5rem', padding: '1rem', background: 'rgba(168,85,247,0.03)', borderRadius: '8px', border: '1px solid rgba(168,85,247,0.1)' }}>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ color: 'var(--accent)' }}>ℹ</span>
+                    These advanced parameters from the UCI Diabetic dataset allow for a more granular risk profile. All fields default to "No" if not specified.
+                  </p>
+                </div>
+                <div className="form-grid" style={{ gap: '1.25rem' }}>
                   <Select label="Repaglinide" field="repaglinide" options={['No','Steady','Up','Down']} />
                   <Select label="Nateglinide" field="nateglinide" options={['No','Steady','Up','Down']} />
                   <Select label="Glimepiride" field="glimepiride" options={['No','Steady','Up','Down']} />
@@ -163,6 +167,7 @@ export default function PredictPage() {
                 </div>
               </div>
             )}
+
           </div>
         </div>}
 
